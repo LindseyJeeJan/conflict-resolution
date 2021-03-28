@@ -18,6 +18,7 @@ function generatePassword(){
 
   var pwMinLength;
   var pwMaxLength;
+  var pwLength;
   var pwTypeLowercase;
   var pwTypeUppercase;
   var pwTypeSpecialCharacters;
@@ -29,9 +30,6 @@ function generatePassword(){
       //   WHEN prompted for the length of the password
       pwMinLength = prompt("Enter minimum number of characters:");
       console.log(`The minimum length is ${pwMinLength}`);
-      if (pwMinLength === null) {
-        return; 
-      }
       // Make sure number is greater than 0, if not force user to reenter
       if (pwMinLength <= 0 ) {
         window.alert("Error: The minimum length must be greater than 0.");
@@ -43,19 +41,16 @@ function generatePassword(){
       //   WHEN prompted for the maxlength of the password
       pwMaxLength = prompt("Enter maxiumum number of characters:");
       console.log(`The maximum length is ${pwMaxLength}`);
-      if (pwMaxLength === null) {
-        return; 
-      }
     }
     
-    getPasswordMinLength();
-    getPasswordMaxLength();
-
     // Make sure the maximum is greater than the miminum, if not force user to reenter
     if (pwMinLength > pwMaxLength) {
       window.alert(`Error: The minimum length (${pwMinLength}) must be less than the maximum length.`);
       getPasswordMaxLength();
     }
+
+    getPasswordMinLength();
+    getPasswordMaxLength();
   }
   
 
@@ -107,6 +102,7 @@ function generatePassword(){
     getCharacterTypeUpperCase();
     getCharacterTypeNumeric();
     getCharacterTypeSpecialCharacters();
+    
     // THEN my input should be validated and at least one character type should be selected
     if ((pwTypeLowercase == "n") && (pwTypeUppercase == "n") && (pwTypeNumeric == "n") && (pwTypeSpecialCharacters == "n")) {
       window.alert("You must chose at least one character type.");
@@ -115,15 +111,17 @@ function generatePassword(){
 
   }
 
-  // create random password length
-  function getRandomArbitrary(min, max) {
-    return Math.floor(Math.random() * (max - min) + min); 
-  }
-
   getPasswordLength();
   getCharacterTypes();
 
-  var pwLength = getRandomArbitrary(pwMinLength, pwMaxLength);
+  // create random password length
+  function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+  }
+
+  pwLength = getRandomInt(pwMinLength, pwMaxLength);
   console.log(`Min is ${pwMinLength}. Max is ${pwMaxLength}. Password length is ${pwLength}.`);
 
   // create random password length

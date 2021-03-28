@@ -116,6 +116,11 @@ button[disabled] {
   border-radius: 6px;
   resize: none;
   overflow: hidden;
+  user-select: all;
+}
+
+#password::selection{
+  background: fuchsia;
 }
 
 @media (max-width: 690px) {
