@@ -1,6 +1,7 @@
+Project description:
 
-  ```md
-  ## This is a subheading created locally.
+Link to deployed application:
+https://lindseyjeejan.github.io/password-generator/
 
-  All of this content added to the readme file has been added from my local Git repository.
-  ```
+Screenshot:
+<img src="assets/03-javascript-homework-demo.png" width="400">
