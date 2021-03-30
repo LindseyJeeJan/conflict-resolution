@@ -1,5 +1,14 @@
 // Assignment Code
 var generateBtn = document.querySelector("#generate");
+
+var userPref = {
+  promptUser: function(prefDesc, message) {
+      prefDesc = prompt(message);
+      return prefDesc;
+  },
+  errorMessageType: "Error: Invalid entry. Must be 'y' or 'n'."
+};
+
 // Write password to the #password input
 function writePassword() {
   var password = generatePassword();
@@ -14,35 +23,29 @@ generateBtn.addEventListener("click", writePassword);
 
 // Determine the criteria for the password's security from the user and return a password that fulfills the requirements
 function generatePassword(){
-  var pwMinLength;
-  var pwMaxLength;
   var pwLength;
-  var pwTypeLowercase;
-  var pwTypeUppercase;
-  var pwTypeSpecialCharacters;
-  var pwTypeNumeric;
   var newPassword;
 
   function getPasswordLength() {
+
     function getPasswordMinLength() {
-      //   WHEN prompted for the length of the password
-      pwMinLength = prompt("Enter minimum number of characters:");
-      
+       userPref.pwMinLength = userPref.promptUser(userPref.pwMinLength, "Enter minimum number of characters:");
       // Make sure number is greater than 0, if not force user to reenter
-      if (pwMinLength <= 0 ) {
-        window.alert("Error: The minimum length must be greater than 0.");
-        getPasswordMinLength();
-      } 
     }
 
+    // Make sure the miniumum is greater than zero
+    if (userPref.pwMinLength <= 0 ) {
+      window.alert("Error: The minimum length must be greater than 0.");
+      getPasswordMinLength();
+    } 
+
     function getPasswordMaxLength() {
-      //   WHEN prompted for the maxlength of the password
-      pwMaxLength = prompt("Enter maxiumum number of characters:");
+      userPref.pwMaxLength = userPref.promptUser(userPref.pwMaxLength, "Enter maxiumum number of characters:");
     }
     
     // Make sure the maximum is greater than the miminum, if not force user to reenter
-    if (pwMinLength > pwMaxLength) {
-      window.alert(`Error: The minimum length (${pwMinLength}) must be less than the maximum length.`);
+    if (userPref.pwMinLength > userPref.pwMaxLength) {
+      window.alert(`Error: The minimum length (${userPref.pwMinLength}) must be less than the maximum length.`);
       getPasswordMaxLength();
     }
 
@@ -50,44 +53,43 @@ function generatePassword(){
     getPasswordMaxLength();
   }
   
-
   function getCharacterTypes() {
     //   Prompt if lowercase letters should be included
     function getCharacterTypeLowerCase() {
-      pwTypeLowercase = prompt("Include lowercase letters? (y/n)");
+      userPref.pwTypeLowercase = userPref.promptUser(userPref.pwTypeLowercase, "Include lowercase letters? (y/n)");
       // Make sure a y or n is entered, if not force user to reenter
-      if ((pwTypeLowercase != 'y') && (pwTypeLowercase != 'n')){
-        window.alert("Error: Invalid entry. Must be 'y' or 'n'.");
+      if ((userPref.pwTypeLowercase != 'y') && (userPref.pwTypeLowercase != 'n')){
+        window.alert(userPref.errorMessageType);
         getCharacterTypeLowerCase();
       }
     }
     
       //   Prompt if uppercase letters should be included
     function getCharacterTypeUpperCase() {
-      pwTypeUppercase = prompt("Include uppercase letters? (y/n)");
+      userPref.pwTypeUppercase = userPref.promptUser(userPref.pwTypeUppercase, "Include uppercase letters? (y/n)");
        // Make sure a y or n is entered, if not force user to reenter
-      if ((pwTypeUppercase != 'y') && (pwTypeUppercase != 'n')){
-        window.alert("Error: Invalid entry. Must be 'y' or 'n'.");
+      if ((userPref.pwTypeUppercase != 'y') && (userPref.pwTypeUppercase != 'n')){
+        window.alert(userPref.errorMessageType);
         getCharacterTypeUpperCase();
       }
     }
 
       //   Prompt if numbers should be included
     function getCharacterTypeNumeric() {
-      pwTypeNumeric = prompt("Include numbers? (y/n)");
+       userPref.pwTypeNumeric = userPref.promptUser(userPref.pwTypeNumeric, "Include numbers? (y/n)");
        // Make sure a y or n is entered, if not force user to reenter
-      if ((pwTypeNumeric != 'y') && (pwTypeNumeric != 'n')){
-        window.alert("Error: Invalid entry. Must be 'y' or 'n'.");
+      if ((userPref.pwTypeNumeric != 'y') && (userPref.pwTypeNumeric != 'n')){
+        window.alert(userPref.errorMessageType);
         getCharacterTypeNumeric();
       }
     }
     
     // Prompt if special characters should be included
     function getCharacterTypeSpecialCharacters() {
-      pwTypeSpecialCharacters = prompt("Include special characters? (y/n)");
+       userPref.pwTypeSpecialCharacters = userPref.promptUser(userPref.pwTypeSpecialCharacters, "Include special characters? (y/n)");
       // Make sure a y or n is entered, if not force user to reenter
-      if ((pwTypeSpecialCharacters != 'y') && (pwTypeSpecialCharacters != 'n')){
-        window.alert("Error: Invalid entry. Must be 'y' or 'n'.");
+      if ((userPref.pwTypeSpecialCharacters != 'y') && (userPref.pwTypeSpecialCharacters != 'n')){
+        window.alert(userPref.errorMessageType);
         getCharacterTypeSpecialCharacters();
       }
     }
@@ -98,7 +100,7 @@ function generatePassword(){
     getCharacterTypeSpecialCharacters();
     
     // THEN my input should be validated and at least one character type should be selected
-    if ((pwTypeLowercase == "n") && (pwTypeUppercase == "n") && (pwTypeNumeric == "n") && (pwTypeSpecialCharacters == "n")) {
+    if ((userPref.pwTypeLowercase == "n") && (userPref.pwTypeUppercase == "n") && (userPref.pwTypeNumeric == "n") && (userPref.pwTypeSpecialCharacters == "n")) {
       window.alert("You must chose at least one character type.");
       getCharacterTypes();
     }
@@ -115,25 +117,23 @@ function generatePassword(){
     return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
   }
 
-  pwLength = getRandomInt(pwMinLength, pwMaxLength);
-  console.log(`Min is ${pwMinLength}. Max is ${pwMaxLength}. Password length is ${pwLength}.`);
+  pwLength = getRandomInt(userPref.pwMinLength, userPref.pwMaxLength);
+  console.log(`Min is ${userPref.pwMinLength}. Max is ${userPref.pwMaxLength}. Password length is ${pwLength}.`);
 
   // create random password length
   function createPassword(length) {
-    console.log(`${pwTypeLowercase}`);
-    console.log('run');
     var characters = '';
 
-    if (pwTypeLowercase == "y"){
+    if (userPref.pwTypeLowercase == "y"){
       characters += ('abcdefghijklmnopqrstuvwxyz');
     }
-    if (pwTypeUppercase == "y"){
+    if (userPref.pwTypeUppercase == "y"){
       characters += ('ABCDEFGHIJKLMNOPQRSTUVWXYZ');
     }
-    if (pwTypeSpecialCharacters == "y"){
+    if (userPref.pwTypeSpecialCharacters == "y"){
       characters += ('~!@#$%^&*_+?');
     }
-    if (pwTypeNumeric == "y"){
+    if (userPref.pwTypeNumeric == "y"){
       characters += ('0123456789');
     }
     console.log(`characters are ${characters}`);
@@ -160,14 +160,14 @@ function generatePassword(){
   }
 
   // determine if the user decided must or must not contain these types
-  var lc = yesOrNo(pwTypeLowercase);
-  var uc = yesOrNo(pwTypeUppercase);
-  var nu = yesOrNo(pwTypeNumeric);
-  var sc = yesOrNo(pwTypeSpecialCharacters);
+  var lc = yesOrNo(userPref.pwTypeLowercase);
+  var uc = yesOrNo(userPref.pwTypeUppercase);
+  var nu = yesOrNo(userPref.pwTypeNumeric);
+  var sc = yesOrNo(userPref.pwTypeSpecialCharacters);
 
     // write rules to the DOM
   var rules = ('Password rules: <ul>' + 
-    '<li>Length must be ' + pwMinLength + '-' + pwMinLength + ' characters.</li>' +
+    '<li>Length must be ' + userPref.pwMinLength + '-' + userPref.pwMaxLength + ' characters.</li>' +
     '<li>' + lc + ' include lower case characters.</li>' +
     '<li>' + uc +' include upper case characters.</li>' +
     '<li>' + nu +' include numbers.</li>' +
