@@ -1,13 +1,12 @@
 // Assignment Code
 var generateBtn = document.querySelector("#generate");
-
 // Write password to the #password input
 function writePassword() {
   var password = generatePassword();
   var passwordText = document.querySelector("#password");
 
+  // write the new password to the textarea
   passwordText.value = password;
-
 }
 
 // Add event listener to generate button
@@ -15,7 +14,6 @@ generateBtn.addEventListener("click", writePassword);
 
 // Determine the criteria for the password's security from the user and return a password that fulfills the requirements
 function generatePassword(){
-
   var pwMinLength;
   var pwMaxLength;
   var pwLength;
@@ -29,7 +27,7 @@ function generatePassword(){
     function getPasswordMinLength() {
       //   WHEN prompted for the length of the password
       pwMinLength = prompt("Enter minimum number of characters:");
-      console.log(`The minimum length is ${pwMinLength}`);
+      
       // Make sure number is greater than 0, if not force user to reenter
       if (pwMinLength <= 0 ) {
         window.alert("Error: The minimum length must be greater than 0.");
@@ -40,7 +38,6 @@ function generatePassword(){
     function getPasswordMaxLength() {
       //   WHEN prompted for the maxlength of the password
       pwMaxLength = prompt("Enter maxiumum number of characters:");
-      console.log(`The maximum length is ${pwMaxLength}`);
     }
     
     // Make sure the maximum is greater than the miminum, if not force user to reenter
@@ -55,12 +52,9 @@ function generatePassword(){
   
 
   function getCharacterTypes() {
+    //   Prompt if lowercase letters should be included
     function getCharacterTypeLowerCase() {
-      //   Prompt if lowercase letters should be included
       pwTypeLowercase = prompt("Include lowercase letters? (y/n)");
-      if (pwTypeLowercase === null) {
-        return; 
-      }
       // Make sure a y or n is entered, if not force user to reenter
       if ((pwTypeLowercase != 'y') && (pwTypeLowercase != 'n')){
         window.alert("Error: Invalid entry. Must be 'y' or 'n'.");
@@ -68,8 +62,8 @@ function generatePassword(){
       }
     }
     
+      //   Prompt if uppercase letters should be included
     function getCharacterTypeUpperCase() {
-       //   Prompt if uppercase letters should be included
       pwTypeUppercase = prompt("Include uppercase letters? (y/n)");
        // Make sure a y or n is entered, if not force user to reenter
       if ((pwTypeUppercase != 'y') && (pwTypeUppercase != 'n')){
@@ -78,8 +72,8 @@ function generatePassword(){
       }
     }
 
+      //   Prompt if numbers should be included
     function getCharacterTypeNumeric() {
-       //   Prompt if numbers should be included
       pwTypeNumeric = prompt("Include numbers? (y/n)");
        // Make sure a y or n is entered, if not force user to reenter
       if ((pwTypeNumeric != 'y') && (pwTypeNumeric != 'n')){
@@ -88,8 +82,8 @@ function generatePassword(){
       }
     }
     
+    // Prompt if special characters should be included
     function getCharacterTypeSpecialCharacters() {
-       // Prompt if special characters should be included
       pwTypeSpecialCharacters = prompt("Include special characters? (y/n)");
       // Make sure a y or n is entered, if not force user to reenter
       if ((pwTypeSpecialCharacters != 'y') && (pwTypeSpecialCharacters != 'n')){
@@ -150,8 +144,36 @@ function generatePassword(){
         result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     console.log(`results are ${result}`);
+    result.replace(/\s/g, "");
     return result;
   }
+  // select the new div
+  var passwordRules =  document.querySelector("#password-rules");
+
+  // output must or must not text
+  function yesOrNo(inputValueYN) {
+      if (inputValueYN == "n"){
+        return 'MUST NOT';
+      } else {
+        return 'MUST';
+      }
+  }
+
+  // determine if the user decided must or must not contain these types
+  var lc = yesOrNo(pwTypeLowercase);
+  var uc = yesOrNo(pwTypeUppercase);
+  var nu = yesOrNo(pwTypeNumeric);
+  var sc = yesOrNo(pwTypeSpecialCharacters);
+
+    // write rules to the DOM
+  var rules = ('Password rules: <ul>' + 
+    '<li>Length must be ' + pwMinLength + '-' + pwMinLength + ' characters.</li>' +
+    '<li>' + lc + ' include lower case characters.</li>' +
+    '<li>' + uc +' include upper case characters.</li>' +
+    '<li>' + nu +' include numbers.</li>' +
+    '<li>' + sc +' include special characters.</li>' 
+    + '</ul');
+  passwordRules.innerHTML += rules;
 
   return createPassword(pwLength);
 }

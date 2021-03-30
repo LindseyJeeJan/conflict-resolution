@@ -120,7 +120,23 @@ button[disabled] {
 }
 
 #password::selection{
-  background: fuchsia;
+  background: #cc0000;
+  color: #fff;
+}
+
+.rules-display{
+  cursor: default;
+  padding: 10px 0 0 0;
+  font-size: .95rem;
+  line-height: 1rem;
+}
+
+.rules-display ul{
+  margin: 5px;
+}
+
+.rules-display li {
+  line-height: 1.1rem;
 }
 
 @media (max-width: 690px) {
