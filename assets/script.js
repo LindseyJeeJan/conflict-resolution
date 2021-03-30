@@ -119,10 +119,10 @@ function generatePassword(){
   }
 
   pwLength = getRandomInt(userPref.pwMinLength, userPref.pwMaxLength);
-  console.log(`Min is ${userPref.pwMinLength}. Max is ${userPref.pwMaxLength}. Password length is ${pwLength}.`);
 
   // create random password length
   function createPassword(length) {
+    
     var characters = '';
 
     if (userPref.pwTypeLowercase == "y"){
@@ -137,14 +137,13 @@ function generatePassword(){
     if (userPref.pwTypeNumeric == "y"){
       characters += ('0123456789');
     }
-    console.log(`characters are ${characters}`);
 
     var result = '';
     var charactersLength = characters.length;
     for ( var i = 0; i < length; i++ ) {
         result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
-    console.log(`results are ${result}`);
+
     result.replace(/\s/g, "");
     return result;
   }
