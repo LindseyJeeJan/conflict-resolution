@@ -1,6 +1,7 @@
 // Assignment Code
 var generateBtn = document.querySelector("#generate");
 
+// Define user preferences object
 var userPref = {
   promptUser: function(prefDesc, message) {
       prefDesc = prompt(message);
@@ -147,33 +148,33 @@ function generatePassword(){
     result.replace(/\s/g, "");
     return result;
   }
-  // select the new div
-  var passwordRules =  document.querySelector("#password-rules");
 
-  // output must or must not text
-  function yesOrNo(inputValueYN) {
-      if (inputValueYN == "n"){
-        return 'MUST NOT';
-      } else {
-        return 'MUST';
-      }
-  }
+  function printRules() {
+      // select the new div
+    var passwordRules =  document.querySelector("#password-rules");
 
-  // determine if the user decided must or must not contain these types
-  var lc = yesOrNo(userPref.pwTypeLowercase);
-  var uc = yesOrNo(userPref.pwTypeUppercase);
-  var nu = yesOrNo(userPref.pwTypeNumeric);
-  var sc = yesOrNo(userPref.pwTypeSpecialCharacters);
+      // write rules to the DOM
+    var rules = ('Password rules: <ul>' + 
+      '<li>Length must be ' + userPref.pwMinLength + '-' + userPref.pwMaxLength + ' characters.</li>' +
+      '<li>' + yesOrNo(userPref.pwTypeLowercase) + ' include lower case characters.</li>' +
+      '<li>' + yesOrNo(userPref.pwTypeUppercase) +' include upper case characters.</li>' +
+      '<li>' + yesOrNo(userPref.pwTypeNumeric) +' include numbers.</li>' +
+      '<li>' + yesOrNo(userPref.pwTypeSpecialCharacters) +' include special characters.</li>' 
+      + '</ul');
 
-    // write rules to the DOM
-  var rules = ('Password rules: <ul>' + 
-    '<li>Length must be ' + userPref.pwMinLength + '-' + userPref.pwMaxLength + ' characters.</li>' +
-    '<li>' + lc + ' include lower case characters.</li>' +
-    '<li>' + uc +' include upper case characters.</li>' +
-    '<li>' + nu +' include numbers.</li>' +
-    '<li>' + sc +' include special characters.</li>' 
-    + '</ul');
-  passwordRules.innerHTML += rules;
+      // output must or must not text
+    function yesOrNo(inputValueYN) {
+        if (inputValueYN == "n"){
+          return 'MUST NOT';
+        } else {
+          return 'MUST';
+        }
+    }
 
+    //add new string to the div
+    passwordRules.innerHTML += rules;
+ } 
+
+  printRules();
   return createPassword(pwLength);
 }
