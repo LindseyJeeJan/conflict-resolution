@@ -36,7 +36,7 @@ function generatePassword(){
 
     // Make sure the miniumum is greater than zero
     if (userPref.pwMinLength <= 0 ) {
-      window.alert("Error: The minimum length must be greater than 0.");
+      window.alert("Error: The minimum number must be greater than 0.");
       getPasswordMinLength();
     } 
 
@@ -46,7 +46,7 @@ function generatePassword(){
     
     // Make sure the maximum is greater than the miminum, if not force user to reenter
     if (userPref.pwMinLength > userPref.pwMaxLength) {
-      window.alert(`Error: The minimum length (${userPref.pwMinLength}) must be less than the maximum length.`);
+      window.alert(`Error: The minimum number (${userPref.pwMinLength}) must be less than the maximum number.`);
       getPasswordMaxLength();
     }
 
@@ -102,7 +102,7 @@ function generatePassword(){
     
     // THEN my input should be validated and at least one character type should be selected
     if ((userPref.pwTypeLowercase == "n") && (userPref.pwTypeUppercase == "n") && (userPref.pwTypeNumeric == "n") && (userPref.pwTypeSpecialCharacters == "n")) {
-      window.alert("You must chose at least one character type.");
+      window.alert("Error: You must chose at least one character type.");
       getCharacterTypes();
     }
 
@@ -149,30 +149,42 @@ function generatePassword(){
   }
 
   function printRules() {
-      // select the new div
-    var passwordRules =  document.querySelector("#password-rules");
+      // create the new div
+    var passwordRules =  document.createElement("div");
+    passwordRules.setAttribute("style", "cursor: default; padding: 10px 0 0 0; font-size: .95rem;line-height: 1rem");
+    passwordRules.textContent = "Password rules: ";
 
-      // write rules to the DOM
-    var rules = ('Password rules: <ul>' + 
-      '<li>Length must be ' + userPref.pwMinLength + '-' + userPref.pwMaxLength + ' characters.</li>' +
-      '<li>' + yesOrNo(userPref.pwTypeLowercase) + ' include lower case characters.</li>' +
-      '<li>' + yesOrNo(userPref.pwTypeUppercase) +' include upper case characters.</li>' +
-      '<li>' + yesOrNo(userPref.pwTypeNumeric) +' include numbers.</li>' +
-      '<li>' + yesOrNo(userPref.pwTypeSpecialCharacters) +' include special characters.</li>' 
-      + '</ul');
-
-      // output must or must not text
+    // create the new ul
+    var newUL = document.createElement("ul");
+    newUL.setAttribute("style", "margin: 5px");
+    
     function yesOrNo(inputValueYN) {
-        if (inputValueYN == "n"){
-          return 'MUST NOT';
-        } else {
-          return 'MUST';
-        }
+      if (inputValueYN == "n"){
+        return 'MUST NOT';
+      } else {
+        return 'MUST';
+      }
+    }
+      // write rules to li and append to the ul
+    function addLiElement(messageIn){
+        var newLi = document.createElement("li");
+        newLi.setAttribute("style", "line-height: 1.1rem");
+        newLi.textContent = messageIn;
+        newUL.appendChild(newLi);
     }
 
+    // create rule text to output in li tags
+    addLiElement(`Length must be ${userPref.pwMinLength} - ${userPref.pwMaxLength} characters.`);
+    addLiElement(`${yesOrNo(userPref.pwTypeLowercase)} include lower case characters.`);
+    addLiElement(`${yesOrNo(userPref.pwTypeUppercase)} include upper case characters.`);
+    addLiElement(`${yesOrNo(userPref.pwTypeNumeric)} include numbers.`);
+    addLiElement(`${yesOrNo(userPref.pwTypeSpecialCharacters)} include special characters.`);
+
     //add new string to the div
-    passwordRules.innerHTML += rules;
- } 
+    var cardBody = document.querySelector(".card-body");
+    cardBody.prepend(passwordRules);
+    passwordRules.appendChild(newUL);
+ }
 
   printRules();
   return createPassword(pwLength);
