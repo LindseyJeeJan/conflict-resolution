@@ -27,11 +27,17 @@ function generatePassword(){
   var pwLength;
   var newPassword;
 
+  if ((document.querySelector('#rules-container')) != null){
+    var rules = document.querySelector('#rules-container');
+    rules.remove();
+  }
+
   function savePasswordMinLength() {
       userPref.pwMinLength = userPref.promptUser(userPref.pwMinLength, "Enter minimum number of characters:");
-    // Make sure number is greater than 0, if not force user to reenter
-    if (userPref.pwMinLength <= 0 ) {
-      window.alert("Error: The minimum number must be greater than 0.");
+      userPref.pwMinLength = parseInt(userPref.pwMinLength);
+    // Make sure number is greater than 7, if not force user to reenter
+    if (userPref.pwMinLength <= 7 ) {
+      window.alert("Error: The minimum number must be at least 8 characters.");
       savePasswordMinLength();
     } 
 
@@ -39,11 +45,19 @@ function generatePassword(){
 
   function savePasswordMaxLength() {
     userPref.pwMaxLength = userPref.promptUser(userPref.pwMaxLength, "Enter maxiumum number of characters:");
+    userPref.pwMaxLength = parseInt(userPref.pwMaxLength);
+    // Make sure number is greater than 7, if not force user to reenter
+      if (userPref.pwMaxLength >= 129 ) {
+        window.alert("Error: The minimum number must be no more than 128 characters.");
+        savePasswordMaxLength();
+      } 
+     
+
       // Make sure the maximum is greater than the miminum, if not force user to reenter
-    if (userPref.pwMinLength > userPref.pwMaxLength) {
-      window.alert(`Error: The minimum number (${userPref.pwMinLength}) must be less than the maximum number.`);
-      savePasswordMaxLength();
-    }
+      if ((userPref.pwMinLength) > (userPref.pwMaxLength)) {
+        window.alert(`Error: The minimum number ${userPref.pwMinLength} must be less than the maximum number ${userPref.pwMaxLength}.`);
+        savePasswordMaxLength();
+      }
   }
 
   function saveCharacterTypeLowerCase() {
@@ -51,7 +65,7 @@ function generatePassword(){
     // Make sure a y or n is entered, if not force user to reenter
     if ((userPref.pwTypeLowercase != 'y') && (userPref.pwTypeLowercase != 'n')){
       window.alert(userPref.errorMessageType);
-      getCharacterTypeLowerCase();
+      saveCharacterTypeLowerCase();
     }
   }
 
@@ -60,7 +74,7 @@ function generatePassword(){
       // Make sure a y or n is entered, if not force user to reenter
     if ((userPref.pwTypeUppercase != 'y') && (userPref.pwTypeUppercase != 'n')){
       window.alert(userPref.errorMessageType);
-      getCharacterTypeUpperCase();
+      saveCharacterTypeUpperCase();
     }
   }
 
@@ -69,7 +83,7 @@ function generatePassword(){
       // Make sure a y or n is entered, if not force user to reenter
     if ((userPref.pwTypeNumeric != 'y') && (userPref.pwTypeNumeric != 'n')){
       window.alert(userPref.errorMessageType);
-      getCharacterTypeNumeric();
+      saveCharacterTypeNumeric();
     }
   }
 
@@ -78,7 +92,7 @@ function generatePassword(){
     // Make sure a y or n is entered, if not force user to reenter
     if ((userPref.pwTypeSpecialCharacters != 'y') && (userPref.pwTypeSpecialCharacters != 'n')){
       window.alert(userPref.errorMessageType);
-      getCharacterTypeSpecialCharacters();
+      saveCharacterTypeSpecialCharacters();
     }
   }
   
@@ -121,6 +135,7 @@ function generatePassword(){
       // create the new div
     var passwordRules =  document.createElement("div");
     passwordRules.setAttribute("style", "cursor: default; padding: 10px 0 0 0; font-size: .95rem;line-height: 1rem");
+    passwordRules.setAttribute("id", "rules-container");
     passwordRules.textContent = "Password rules: ";
 
     // create the new ul
